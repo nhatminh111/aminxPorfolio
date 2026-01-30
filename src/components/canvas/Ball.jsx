@@ -49,7 +49,7 @@ const BallCanvas = ({ icon }) => {
         <Ball imgUrl={icon} />
       </Suspense>
 
-      <Preload all />
+      {/* Không preload vì Ball chỉ load khi cần */}
     </Canvas>
   );
 };

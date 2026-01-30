@@ -35,7 +35,7 @@ const EarthCanvas = () => {
         />
         <Earth />
 
-        <Preload all />
+        {/* Không preload vì Earth chỉ load khi cần */}
       </Suspense>
     </Canvas>
   );
