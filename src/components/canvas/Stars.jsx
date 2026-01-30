@@ -35,7 +35,7 @@ const StarsCanvas = () => {
           <Stars />
         </Suspense>
 
-        {/* Không preload vì Stars là lightweight */}
+        <Preload all />
       </Canvas>
     </div>
   );

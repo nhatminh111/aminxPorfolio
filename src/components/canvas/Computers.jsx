@@ -294,8 +294,7 @@ const ComputersCanvas = () => {
         <Computers isMobile={isMobile} />
       </Suspense>
 
-      {/* Chỉ preload model PC thay vì tất cả assets */}
-      <Preload />
+      <Preload all />
     </Canvas>
   );
 };
