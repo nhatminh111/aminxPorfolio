@@ -230,9 +230,9 @@ const Computers = ({ isMobile }) => {
       <pointLight intensity={1} />
       <primitive
         object={computer.scene}
-        scale={isMobile ? 0.7 : 0.75}
-        position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
-        rotation={[-0.01, -0.2, -0.1]}
+        scale={isMobile ? 0.5 : 0.75}  // Giảm scale trên mobile để PC hiển thị đầy đủ
+        position={isMobile ? [0, -2.0, -0.6] : [0, -3, -1.5]}  // Điều chỉnh position cho mobile
+        rotation={isMobile ? [-0.01, -0.15, -0.05] : [-0.01, -0.2, -0.1]}  // Điều chỉnh rotation cho mobile
       />
       <RGBLights scene={computer.scene} />
       <RGBPointLights />
@@ -242,34 +242,47 @@ const Computers = ({ isMobile }) => {
 
 const ComputersCanvas = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
 
   useEffect(() => {
-    // Add a listener for changes to the screen size
-    const mediaQuery = window.matchMedia("(max-width: 500px)");
-
-    // Set the initial value of the `isMobile` state variable
-    setIsMobile(mediaQuery.matches);
-
-    // Define a callback function to handle changes to the media query
-    const handleMediaQueryChange = (event) => {
-      setIsMobile(event.matches);
+    // Check for mobile and tablet
+    const checkScreenSize = () => {
+      const mobile = window.matchMedia("(max-width: 640px)").matches;
+      const tablet = window.matchMedia("(max-width: 1024px) and (min-width: 641px)").matches;
+      setIsMobile(mobile);
+      setIsTablet(tablet);
     };
 
-    // Add the callback function as a listener for changes to the media query
-    mediaQuery.addEventListener("change", handleMediaQueryChange);
+    checkScreenSize();
 
-    // Remove the listener when the component is unmounted
+    const mobileQuery = window.matchMedia("(max-width: 640px)");
+    const tabletQuery = window.matchMedia("(max-width: 1024px) and (min-width: 641px)");
+
+    const handleMobileChange = (e) => setIsMobile(e.matches);
+    const handleTabletChange = (e) => setIsTablet(e.matches);
+
+    mobileQuery.addEventListener("change", handleMobileChange);
+    tabletQuery.addEventListener("change", handleTabletChange);
+
     return () => {
-      mediaQuery.removeEventListener("change", handleMediaQueryChange);
+      mobileQuery.removeEventListener("change", handleMobileChange);
+      tabletQuery.removeEventListener("change", handleTabletChange);
     };
   }, []);
+
+  // Điều chỉnh camera và FOV cho mobile/tablet
+  const cameraConfig = isMobile 
+    ? { position: [15, 2, 4], fov: 35 }  // Mobile: camera gần hơn, FOV rộng hơn
+    : isTablet
+    ? { position: [18, 2.5, 4.5], fov: 30 }  // Tablet: camera trung bình
+    : { position: [20, 3, 5], fov: 25 };  // Desktop: camera mặc định
 
   return (
     <Canvas
       frameloop='always'
       shadows
-      dpr={[1, 2]}
-      camera={{ position: [20, 3, 5], fov: 25 }}
+      dpr={isMobile ? [1, 1.5] : [1, 2]}  // Giảm DPR trên mobile để tăng performance
+      camera={cameraConfig}
       gl={{ preserveDrawingBuffer: true }}
     >
       <Suspense fallback={<CanvasLoader />}>
