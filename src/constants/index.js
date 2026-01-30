@@ -24,6 +24,7 @@ import {
   tripguide,
   threejs,
   fpt,
+  aimind,
 } from "../assets";
 
 export const navLinks = [
@@ -130,11 +131,11 @@ const experiences = [
     ],
   },
   {
-    title: "React Native Developer",
-    company_name: "Tesla",
-    icon: tesla,
+    title: "Full Stack Developer",
+    company_name: "AiMind",
+    icon: aimind,
     iconBg: "#E6DEDD",
-    date: "Jan 2021 - Feb 2022",
+    date: "April 2025 - Current",
     points: [
       "Developing and maintaining web applications using React.js and other related technologies.",
       "Collaborating with cross-functional teams including designers, product managers, and other developers to create high-quality products.",
